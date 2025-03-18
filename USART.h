@@ -1,52 +1,45 @@
+#define F_CPU (int)16e6
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
+//#include <util/delay.h>
 
-int8_t ADC_0_init()
+
+
+//8bit 2stop uart, USING USART 0? -- 20.7
+void USART_init(unsigned int ubrr)
 {
-
-	PRR &= ~(1 << PRADC);
-	// 1.1V Vref
-	ADMUX = (0x03 << REFS0) | (0 << ADLAR) | (0x00 << MUX0);
-	ADCSRA = (1 << ADEN) | (0 << ADATE) | (0 << ADIE) | (0x04 << ADPS0);
-	ADCSRB = (0x00 << ADTS0)   | (0 << ACME);
-
-	return 0;
+	//ubrr 103 - 9600 baud - 0.2% error
+	//ubrr 8 115.2k - 3.5% error
+	//unsigned int ubrr = (F_CPU / (2*baud)) - 1;
+	UCSR0A  |= (1 << U2X0);
+	UBRR0H = (unsigned char) (ubrr >> 8);
+	UBRR0L = (unsigned char) (ubrr);
+	UCSR0B = (1 << RXEN0) | (1 << TXEN0); //tx, rx enable
+	UCSR0C = (1 << USBS0) | (3 << UCSZ00); // 8bit data, 2 stops
+	// ucszXX changes bit depth, 9 data bits is covered in atmega package
 }
 
-void ADC_0_enable()
+void USART_Transmit(unsigned int data)
 {
-	ADCSRA |= (1 << ADEN);
+	// wait to empty tx buffer
+	while( !((UCSR0A) & (1<<UDRE0)) ); 
+	UDR0 = data;
 }
 
-void ADC_0_disable()
+unsigned char USART_Receive(void)
 {
-	ADCSRA &= ~(1 << ADEN);
+	// wait to fill rx buffer
+	while ( !(UCSR0A & (1<<RXC0)) );
+	
+	return UDR0;
 }
 
-void ADC_0_start_conversion(uint8_t channel)
+void USART_Flush( void )
 {
-	ADMUX &= ~0x0F;
-	ADMUX |= channel;
-	ADCSRA |= (1 << ADSC);
-}
-
-int ADC_0_is_conversion_done()
-{
-	return ((ADCSRA & (1 << ADIF)));
-}
-
-uint16_t ADC_0_get_conversion_result(void)
-{
-	return (ADCL | ADCH << 8);
-}
-
-uint16_t ADC_0_get_conversion(uint8_t channel)
-{
-	uint16_t res;
-
-	ADC_0_start_conversion(channel);
-	while (!ADC_0_is_conversion_done());
-	res = ADC_0_get_conversion_result();
-	ADCSRA |= (1 << ADIF);
-	return res;
+	unsigned char dummy;
+	while( UCSR0A & (1<<RXC0) )
+	{
+		dummy = UDR0;
+	}
 }
