@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define IIR_ORDER 2
+
+#define INT16_MAX 32767
+#define INT16_MIN -32768
+
 // b coefficients: b0, b1, b2
 // (e.g., 0.25, 0.5, 0.25 in Q15, fixed point)
 static const int16_t b[IIR_ORDER + 1] = { 8192, 16384, 8192 }; 
