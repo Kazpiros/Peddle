@@ -1,3 +1,5 @@
+#define F_CPU (int)16e6
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
@@ -10,7 +12,7 @@ ISR(TIMER0_OVF_vect)
 
 void PWM_init(void)
 {
-	DDRD |= (1 << DDB1); // pwm output
+	DDRB |= (1 << DDB1); // pwm output
 	
 	//OC0A //too?
 	// phase correct, 10 bit
