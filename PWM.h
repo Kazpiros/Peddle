@@ -10,6 +10,12 @@ ISR(TIMER0_OVF_vect)
 	total_ticks += 256;
 }
 
+ISR(TIMER1_OVF_vect)
+{
+	total_ticks += 256;
+	stop_timer();
+}
+
 void PWM_init(void)
 {
 	DDRB |= (1 << DDB1); // pwm output
@@ -46,6 +52,19 @@ void TIM16_WriteTCNT1(unsigned int i)
 	SREG = sreg;
 }
 //start 8 bit tim0
+void sample_rate(int rate)
+{
+	cli();
+	total_ticks = 0;
+	TCNT0 = 0; //reset count
+	sei();
+	
+	TCCR0A = 0;
+	TCCR0B = (1 << CS01); // 8x prescaler, worst case scenario 8 cc error.
+	TIMSK0 |= (1 << TOIE0);
+	// add flag pull here @ rate >> ... 8
+}
+
 void start_timer(void)
 {
 	cli();
@@ -65,7 +84,18 @@ uint16_t stop_timer(void)
 	TCCR0B = 0;
 	
 	cli();
-	ticks = (total_ticks + TCNT1) * 8; 
+	ticks = (total_ticks + TCNT1) * 8; //1 or 0?
+	sei();
+	return ticks;
+}
+uint16_t stop_timer1(void)
+{
+	uint8_t ticks;
+	TIMSK1 &= ~(1 << TOIE1);
+	TCCR1B = 0;
+	
+	cli();
+	ticks = (total_ticks + TCNT1) * 8; //1 or 0?
 	sei();
 	return ticks;
 }
