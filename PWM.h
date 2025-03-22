@@ -5,16 +5,10 @@
 
 volatile uint8_t total_ticks = 0;
 
-ISR(TIMER0_OVF_vect)
-{
-	total_ticks += 256;
-}
-
-ISR(TIMER1_OVF_vect)
-{
-	total_ticks += 256;
-	stop_timer();
-}
+//ISR(TIMER0_COMPA_VECT) // no routines yet...
+//{
+//	TCNT0 = 0; //reset count
+//}
 
 void PWM_init(void)
 {
@@ -26,78 +20,23 @@ void PWM_init(void)
 	TCCR1B = (1 << WGM13) | (1 << CS10); // (1 << ICNC1) noise canceller (4 cycle delay)
 	
 }
+
 void PWM_update(unsigned int top_val)
 {
 	ICR1 = top_val;
 	OCR1A = top_val >> 1;// duty cycle (50%)
 }
 
-unsigned int TIM16_ReadTCNT1(void)
+void start_sampling(int rate)
 {
-	unsigned char sreg;
-	unsigned int i;
-	sreg = SREG; // interrupt flag
-	cli(); //disable interrupts
-	i = TCNT1;
-	SREG = sreg;
-	return i;
-}
-
-void TIM16_WriteTCNT1(unsigned int i)
-{
-	unsigned char sreg;
-	sreg = SREG; // interrupt flag
-	cli(); //disable interrupts
-	TCNT1 = i;
-	SREG = sreg;
-}
-//start 8 bit tim0
-void sample_rate(int rate)
-{
+    
 	cli();
 	total_ticks = 0;
 	TCNT0 = 0; //reset count
 	sei();
-	
-	TCCR0A = 0;
-	TCCR0B = (1 << CS01); // 8x prescaler, worst case scenario 8 cc error.
-	TIMSK0 |= (1 << TOIE0);
-	// add flag pull here @ rate >> ... 8
-}
-
-void start_timer(void)
-{
-	cli();
-	total_ticks = 0;
-	TCNT0 = 0; //reset count
-	sei();
-	
-	TCCR0A = 0;
-	TCCR0B = (1 << CS01); // 8x prescaler, worst case scenario 8 cc error.
-	TIMSK0 |= (1 << TOIE0);
-	// 8* 256 = 65k cc of time
-}
-uint16_t stop_timer(void)
-{
-	uint8_t ticks;
-	TIMSK0 &= ~(1 << TOIE0);
-	TCCR0B = 0;
-	
-	cli();
-	ticks = (total_ticks + TCNT1) * 8; //1 or 0?
-	sei();
-	return ticks;
-}
-uint16_t stop_timer1(void)
-{
-	uint8_t ticks;
-	TIMSK1 &= ~(1 << TOIE1);
-	TCCR1B = 0;
-	
-	cli();
-	ticks = (total_ticks + TCNT1) * 8; //1 or 0?
-	sei();
-	return ticks;
-}
-
-// go to 93 page for pwm stuff
+	// CTC MODE (WGM02:0 = 2) (clear on match)
+	// TCNT0 == OCR0A (top val of counter)
+	TCCR0A = (1 << COM0A1); //clear ocr0a on  match
+	TCCR0B = (1 << CS01) | (1 << CS00) | (1 << WGM01); // 64x prescaler, CTC en
+    OCR0A = (F_CPU/rate) / 16
+}// go to 93 page for pwm stuff
