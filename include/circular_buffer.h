@@ -7,7 +7,7 @@
 typedef struct circular_buf{
     uint16_t buffer[BUFFER_SIZE];
     int readIndex;
-    int writeInd;
+    int writeIndex;
 }circular_buf;
 
 circular_buf buffer = { .writeIndex = 0 }; // malloc bad
