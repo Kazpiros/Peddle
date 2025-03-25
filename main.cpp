@@ -32,7 +32,7 @@ int main(void)
 {
 	SREG = (1 << 7); // global enable
 	//PRR = 0xff; // all power reduction measures off
-	USART_init(9600);
+	USART_init(115200);
 	PWM_init();
 	ADC_init();
 	ADC_start_conversion(0);
@@ -41,7 +41,6 @@ int main(void)
 	timB_8_init(256); // 128th note * 2 (record envelope)
 
     TCNT0 = 0; // start sample rate timer for debug
-	int i = 0;
 	while(1)
 	{
 		switch (adc_switch)
@@ -64,7 +63,7 @@ int main(void)
 
 		default:
 			break;
-		} adc_switch:
+		}
 	}
 }
 
@@ -80,4 +79,3 @@ ISR(TIMER2_COMPA_vect)
 	PORTB ^= (1<<DDB2); // signals out
 	adc_switch = ENVELOPE_CONVERSION;
 }
-
