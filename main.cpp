@@ -50,14 +50,15 @@ int main(void)
 			level = ADC_get_conversion(0);
 			level = iir_DF2(level, envelope);
 			PWM_update(level);
-			USART_Transmit(TCNT0); // debug
+			USART_Transmit(TCNT0); 	 // debug
 			break;
 
 		case ENVELOPE_CONVERSION:
 			envelope = ADC_get_conversion(1);
 			level = iir_DF2(level, envelope);
 			PWM_update(level);
-			USART_Transmit(TCNT0); // debug
+			//USART_Transmit(TCNT0); // debug
+			PORTB ^= (1<<DDB2); 	 // debug
 			adc_switch = DEFAULT_CONVERSION;
 			break;
 
