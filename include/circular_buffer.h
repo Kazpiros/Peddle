@@ -1,3 +1,6 @@
+#ifndef CIRCULAR_BUFFER_H
+#define CIRCULAR_BUFFER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,7 +13,7 @@ typedef struct circular_buf{
     int writeIndex;
 }circular_buf;
 
-circular_buf buffer = { .writeIndex = 0 }; // malloc bad
+//circular_buf buffer = { .writeIndex = 0 }; // malloc bad
 
 inline void write_cbuf(circular_buf* cbuf, int val)
 {
@@ -30,3 +33,5 @@ void cbuf_init(circular_buf* cbuf)
     cbuf->writeIndex = 0;
     cbuf->readIndex = 0;
 }
+
+#endif
