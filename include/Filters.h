@@ -16,7 +16,6 @@ static const int16_t a[10][IIR_ORDER];
 static int32_t state[IIR_ORDER] = { 0 };
 
 
-
 int16_t iir_DF2(int16_t input, int16_t level)
 {
 
