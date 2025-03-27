@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "include/circular_buffer.hpp"
+#include "circular_buffer.hpp"
 
-inline void write_cbuf(circular_buf* cbuf, int16_t val)
+
+void write_cbuf(circular_buf* cbuf, int16_t val)
 {
     cbuf->buffer[(++cbuf->writeIndex) & BUFFER_SIZE_MASK] = val;
 }
 
-inline int16_t read_cbuf(circular_buf* cbuf, unsigned Xn)
+int16_t read_cbuf(circular_buf* cbuf, unsigned Xn)
 {
     return cbuf->buffer[(cbuf->writeIndex - Xn) & BUFFER_SIZE_MASK];
 }

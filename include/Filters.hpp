@@ -4,11 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "include/circular_buffer.hpp"
+
+#include "circular_buffer.hpp"
 
 #define IIR_ORDER 2
-#define INT16_MAX 32767
-#define INT16_MIN -32768
 #define SATURATE(x) ((x > INT16_MAX) ? INT16_MAX : (x < INT16_MIN) ? INT16_MIN : (int16_t)(x))
 
 static int32_t state[IIR_ORDER] = { 0 };

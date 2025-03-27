@@ -1,13 +1,9 @@
-#include <avr/interrupt.h>
-#include <avr/iom328p.h>
-//#include <avr/io.h>
-#include <avr/sfr_defs.h>
+#include <avr/io.h>
 
-#include <avr/common.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "include/ADC_START.hpp"
+#include "ADC_START.hpp"
 
 int8_t ADC_init()
 {

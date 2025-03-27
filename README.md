@@ -2,7 +2,13 @@
 *for when you just want to smuggle and distribute some sweet tunes*
 
 ## **TO Build:** 
-```avr-gcc -O3 -mmcu=atmega328 -o main main.cpp```
+```make```
+```make flash```
+
+
+(ensure:)
+brew tap osx-cross/avr
+brew install avr-gcc avrdude
 
 ## Current functionality:
 - Static 2-pole filter

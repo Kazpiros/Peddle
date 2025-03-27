@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "include/circular_buffer.hpp"
-#include "include/Filters.hpp"
+#include "circular_buffer.hpp"
+#include "Filters.hpp"
 
 int16_t iir_DF2(circular_buf* filter_buf, int16_t input, int16_t level)
 {

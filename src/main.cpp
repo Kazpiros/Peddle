@@ -1,17 +1,14 @@
-#include <avr/interrupt.h>
-#include <avr/iom328p.h>
-//#include <avr/io.h>
-#include <avr/sfr_defs.h>
+#include <avr/io.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "include/USART.hpp"
-#include "include/ADC_START.hpp"
-#include "include/PWM.hpp"
-#include "include/Filters.hpp"
-#include "include/timers.hpp"
-#include "include/circular_buffer.hpp"
+#include "USART.hpp"
+#include "ADC_START.hpp"
+#include "PWM.hpp"
+#include "Filters.hpp"
+#include "timers.hpp"
+#include "circular_buffer.hpp"
 
 #define F_CPU (int)16e6
 #define SAMPLE_RATE 25600U

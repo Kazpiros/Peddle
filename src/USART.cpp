@@ -1,12 +1,12 @@
-#include <avr/iom328p.h>
+#include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/common.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "include/USART.hpp"
+#include "USART.hpp"
 
-
+#define F_CPU (int)16e6
 //8bit 2stop uart, USING USART 0? -- 20.7
 void USART_init(int BAUD)
 {

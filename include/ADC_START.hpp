@@ -2,9 +2,7 @@
 #define ADCSTART_HPP
 
 #include <avr/interrupt.h>
-#include <avr/iom328p.h>
-//#include <avr/io.h>
-#include <avr/sfr_defs.h>
+#include <avr/io.h>
 
 #include <avr/common.h>
 #include <stdlib.h>

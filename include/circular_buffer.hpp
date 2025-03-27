@@ -15,9 +15,9 @@ typedef struct circular_buf{
 } circular_buf;
 
 
-inline void write_cbuf(circular_buf* cbuf, int16_t val);
+void write_cbuf(circular_buf* cbuf, int16_t val);
 
-inline int16_t read_cbuf(circular_buf* cbuf, unsigned Xn);
+int16_t read_cbuf(circular_buf* cbuf, unsigned Xn);
 
 void cbuf_init(circular_buf* cbuf);
 

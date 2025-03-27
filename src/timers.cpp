@@ -1,11 +1,10 @@
-#include <avr/iom328p.h>
-#include <avr/interrupt.h>
-#include <avr/interrupt.h>
-#include <avr/common.h>
+#include <avr/io.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "include/timers.hpp"
+#include <avr/interrupt.h>
+#include "timers.hpp"
 
 // Ensure rate/64 > 255
 void timA_8_init(uint16_t rate) // DID I ENABLE INTERRUPTS????
@@ -39,7 +38,7 @@ void timB_8_init(uint16_t rate)
 }
 
 //Pre-mature Interrupt, returns difference between arg and TCNTn
-uint8_t timA_8_PreInt(u_int16_t rate)
+uint8_t timA_8_PreInt(uint16_t rate)
 {
     PORTB ^= (1<<DDB3);
     uint8_t compare = rate >> 8;
@@ -48,7 +47,7 @@ uint8_t timA_8_PreInt(u_int16_t rate)
 }
 
 //Pre-mature Interrupt, returns difference between arg and TCNTn
-uint8_t timB_8_PreInt(u_int16_t rate)
+uint8_t timB_8_PreInt(uint16_t rate)
 {
     PORTB ^= (1<<DDB3); // for configuration
     uint8_t compare = rate >> 8;
