@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <math.h>
-#include "include/circular_buffer.h"  // Use your header file
-#include "include/Filters.h"
+
+#include "include/circular_buffer.hpp"  // Use your header file
+#include "include/Filters.hpp"
 
 #define PI 3.14159265358979323846
 #define Q15_SCALE 32767

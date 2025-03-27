@@ -1,18 +1,8 @@
-#ifndef CIRCULAR_BUFFER_H
-#define CIRCULAR_BUFFER_H
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 
-#define BUFFER_SIZE 16U
-#define BUFFER_SIZE_MASK (BUFFER_SIZE-1U)
-
-typedef struct circular_buf{
-    int16_t buffer[BUFFER_SIZE]; 
-    int readIndex;
-    int writeIndex;
-} circular_buf;
+#include "include/circular_buffer.hpp"
 
 inline void write_cbuf(circular_buf* cbuf, int16_t val)
 {
@@ -32,5 +22,3 @@ void cbuf_init(circular_buf* cbuf)
     cbuf->writeIndex = 0;
     cbuf->readIndex = 0;
 }
-
-#endif

@@ -1,17 +1,16 @@
-#define F_CPU (int)16e6
 #include <avr/iom328p.h>
 #include <avr/interrupt.h>
 #include <avr/common.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#define F_CPU (int)16e6
+#include "include/USART.hpp"
 
 
 //8bit 2stop uart, USING USART 0? -- 20.7
-void USART_init(unsigned int BAUD)
+void USART_init(int BAUD)
 {
-	uint16_t ubrr = F_CPU / (8 * BAUD) - 1;
+	uint16_t ubrr = (uint16_t)(F_CPU / (8 * BAUD) - 1);
 
 	UCSR0A  |= (1 << U2X0);
 	UBRR0H = (unsigned char) (ubrr >> 8);

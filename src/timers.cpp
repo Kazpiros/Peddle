@@ -5,10 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define F_CPU (int)16e6
-
-//TCCR1/2 -> 8bit
-volatile uint8_t total_ticks = 0;
+#include "include/timers.hpp"
 
 // Ensure rate/64 > 255
 void timA_8_init(uint16_t rate) // DID I ENABLE INTERRUPTS????

@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "include/ADC_START.hpp"
+
 int8_t ADC_init()
 {
 

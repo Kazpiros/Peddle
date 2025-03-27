@@ -2,13 +2,12 @@
 #include <avr/interrupt.h>
 #include <avr/interrupt.h>
 #include <avr/common.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "include/PWM.hpp"
 
-#define F_CPU (int)16e6
-
-//pwm on 16 bit stream
 void PWM_init(void)
 {
 	DDRB |= (1 << DDB1); // pwm output
