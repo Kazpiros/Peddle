@@ -1,5 +1,5 @@
+.gitignore
 include/avr/
 main.dSYM/
 filter_coefficients.csv
 .vscode
-.gitignore
