@@ -9,9 +9,7 @@
 #include "Filters.hpp"
 #include "timers.hpp"
 #include "circular_buffer.hpp"
-
-#define F_CPU (int)16e6
-#define SAMPLE_RATE 25600U
+#include "config.hpp"
 
 unsigned int ADC_VAL = 0;
 char ADC_VAL_Char[5];
@@ -28,10 +26,13 @@ volatile ADC_Switch_t adc_switch = DEFAULT_CONVERSION;
 int main(void)
 {
 	SREG = (1 << 7); // global enable
+
+	// Keep this statically allocated.
 	circular_buf filter_buf;
-    cbuf_init(&filter_buf);
+    cbuf_init(&filter_buf); 
 	
-	USART_init(115200);
+	//USART_init(115200);
+	MSPI_Init(); // clk/128
 	PWM_init();
 	ADC_init();
 	ADC_start_conversion(0);
@@ -48,15 +49,14 @@ int main(void)
 			level = ADC_get_conversion(0);
 			level = iir_DF1(&filter_buf, level, envelope);
 			PWM_update(level);
-			USART_Transmit(TCNT0); 	 // debug
+			MSPI_Transmit(TCNT0);
 			break;
 
 		case ENVELOPE_CONVERSION:
 			envelope = ADC_get_conversion(1);
 			level = iir_DF1(&filter_buf, level, envelope);
 			PWM_update(level);
-			//USART_Transmit(TCNT0); // debug
-			PORTB ^= (1<<DDB2); 	 // debug
+			MSPI_Transmit(0xFF); // to show that envelopes running
 			adc_switch = DEFAULT_CONVERSION;
 			break;
 
@@ -69,12 +69,12 @@ int main(void)
 ISR(TIMER0_COMPA_vect)
 {
     TCNT0 = 0; // reset timer
-	PORTB ^= (1<<DDB0); // signals out
+	PORTB ^= (1 << PB0); // signals out
 }
 
 ISR(TIMER2_COMPA_vect) 
 {
 	TCNT2 = 0; // reset timer
-	PORTB ^= (1<<DDB2); // signals out
+	PORTB ^= (1 << PB0); // signals out
 	adc_switch = ENVELOPE_CONVERSION;
 }

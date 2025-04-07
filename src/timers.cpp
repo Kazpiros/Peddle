@@ -40,7 +40,6 @@ void timB_8_init(uint16_t rate)
 //Pre-mature Interrupt, returns difference between arg and TCNTn
 uint8_t timA_8_PreInt(uint16_t rate)
 {
-    PORTB ^= (1<<DDB3);
     uint8_t compare = rate >> 8;
     TIFR0 |= (1 << OCF0A);
     return compare - TCNT0;
@@ -49,7 +48,6 @@ uint8_t timA_8_PreInt(uint16_t rate)
 //Pre-mature Interrupt, returns difference between arg and TCNTn
 uint8_t timB_8_PreInt(uint16_t rate)
 {
-    PORTB ^= (1<<DDB3); // for configuration
     uint8_t compare = rate >> 8;
     TIFR2 |= (1 << OCF0A);
     return compare - TCNT2;

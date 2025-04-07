@@ -10,8 +10,9 @@ int8_t ADC_init()
 
 	PRR &= ~(1 << PRADC);
 	// 1.1V Vref
-	ADMUX = (0x03 << REFS0) | (0 << ADLAR);//
-	ADCSRA = (1 << ADEN) | (0 << ADATE) | (0 << ADIE) | (0x04 << ADPS0);
+	ADMUX = (0x03 << REFS0) | (0 << ADLAR);
+	// F_CPU/128 ADPS0 prescale - 9.6kSPS
+	ADCSRA = (1 << ADEN) | (0 << ADATE) | (0 << ADIE) | (0x07 << ADPS0);
 	ADCSRB = (0x00 << ADTS0)   | (0 << ACME);
 
 	return 0;

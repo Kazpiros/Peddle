@@ -6,7 +6,6 @@
 
 #include "USART.hpp"
 
-#define F_CPU (int)16e6
 //8bit 2stop uart, USING USART 0? -- 20.7
 void USART_init(int BAUD)
 {
@@ -42,4 +41,38 @@ void USART_Flush( void )
 	{
 		dummy = UDR0;
 	}
+}
+
+void MSPI_Init(void)
+{
+	DDRB |= (1 << DDB2) | (1 << DDB3) | (1 << DDB5);
+	PORTB |= (1 << PB2); // deselect slave
+	// Enable SPI, SCK = F_CPU/128
+	SPCR = (1 << SPE) | (1 << MSTR)
+		 | (1 << SPR0) | (1 << SPR1);
+	
+}
+
+void MSPI_Transmit(char cData)
+{
+	PORTB &= ~(1 << PB2); // SS low - select slave
+	SPDR = cData; // start tx
+	while(!(SPSR & (1 << SPIF)));
+	PORTB |= (1 << PB2); // SS high - deselect slave
+}
+
+void SSPI_init(void)
+{
+	// set pin SS (DDB2 input)
+	DDRB |= (1 << DDB4);
+	//here for good practice
+	DDRB &= ~((1 << DDB2) | (1 << DDB3) | (1 << DDB5));
+	// Enable SPI
+	SPCR = (1 << SPE);
+}
+
+char SSPI_receive(void)
+{
+	while(!(SPSR & (1 << SPIF)));
+	return SPDR;
 }
