@@ -32,7 +32,7 @@ int main(void)
     cbuf_init(&filter_buf); 
 	
 	//USART_init(115200);
-	MSPI_Init(); // clk/128
+	MSPI_Init(); // sck = clk/128
 	PWM_init();
 	ADC_init();
 	ADC_start_conversion(0);

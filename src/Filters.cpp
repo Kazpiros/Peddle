@@ -36,3 +36,4 @@ int16_t iir_DF1(circular_buf* filter_buf, int16_t input, int16_t level)
     y = SATURATE(y);
     return (int16_t)y;
 }
+

@@ -8,7 +8,8 @@ OBJCOPY = avr-objcopy
 AVRDUDE = avrdude
 PROGRAMMER = arduino
 ISP_PROGRAMMER = stk500v1
-PORT = /dev/ttyUSB0  # Change as needed
+#PORT = /dev/ttyUSB0  # Change as needed
+PORT = /dev/tty.usbserial-1430
 
 # Compiler flags
 CFLAGS = -Wall -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)
@@ -46,7 +47,6 @@ flash: $(TARGET).hex
 
 lisp: $(TARGET).hex
 	$(AVRDUDE) -c $(ISP_PROGRAMMER) -p $(MCU) -P $(PORT) -b 115200 -U flash:w:$(TARGET).hex:i
-
-# Clean project
+	
 clean:
 	rm -f $(SRC_DIR)/*.o $(TARGET).elf $(TARGET).hex

@@ -8,10 +8,13 @@
 #include "circular_buffer.hpp"
 
 #define IIR_ORDER 2
+
 #define SATURATE(x) ((x > INT16_MAX) ? INT16_MAX : (x < INT16_MIN) ? INT16_MIN : (int16_t)(x))
+#define LERP(x,x1,x2,y2,y1) (y1 + (x-x1)/(x2-x1)*(y2-y1))
 
 static int32_t state[IIR_ORDER] = { 0 };
 
+//change this
 static const int16_t a[10][2] = {
     {-29226, 13189},
     {-27840, 12106},
