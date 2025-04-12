@@ -12,9 +12,9 @@
 --- 
 **ON DEBIAN**
 
-```$ brew tap osx-cross/avr```
+```$ sudo apt update```
 
-```$ brew install avr-gcc avrdude```
+```$ sudo apt install gcc-avr binutils-avr avr-libc avrdude```
 
 ## To Build: 
 Uses:
