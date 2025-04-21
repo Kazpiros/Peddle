@@ -9,7 +9,8 @@ AVRDUDE = avrdude
 PROGRAMMER = arduino
 ISP_PROGRAMMER = stk500v1
 #PORT = /dev/ttyUSB0  # Change as needed
-PORT = /dev/tty.usbserial-1430
+#ls -la /dev/ | grep -i usb
+PORT = /dev/tty.usbserial-1420
 
 # Compiler flags
 CFLAGS = -Wall -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)

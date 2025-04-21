@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 #include "config.hpp"
-
+//https://electronics.stackexchange.com/questions/644461/how-to-send-16-bit-data-to-mcp4802-from-atmega328p-arduino-nano
+//REDO SPI 
 void USART_init(int BAUD);
 
 void USART_Transmit(unsigned int data);
@@ -31,11 +32,13 @@ SS high is "act as master", SS low "act as slave"
 // MasterSPI_Init -> MOSI
 void MSPI_Init(void);
 
-void MSPI_Transmit(char cData);
+inline void MSPI_Transmit(char cData);
 
 // SlaveSPI_init -> MISO
 void SSPI_init(void);
 
-char SSPI_recieve(void);
+inline char SSPI_recieve(void);
+
+inline char MSPI_recieve(void);
 
 #endif

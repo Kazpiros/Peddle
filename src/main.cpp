@@ -43,6 +43,7 @@ int main(void)
     TCNT0 = 0; // start sample rate timer for debug
 	while(1)
 	{
+		//PORTB ^= (1 << PB0); // signals out
 		switch (adc_switch)
 		{
 		case DEFAULT_CONVERSION:
@@ -69,12 +70,12 @@ int main(void)
 ISR(TIMER0_COMPA_vect)
 {
     TCNT0 = 0; // reset timer
-	PORTB ^= (1 << PB0); // signals out
+	//PORTB ^= (1 << PB0); // signals out
 }
 
 ISR(TIMER2_COMPA_vect) 
 {
 	TCNT2 = 0; // reset timer
-	PORTB ^= (1 << PB0); // signals out
+	//PORTB ^= (1 << PB0); // signals out
 	adc_switch = ENVELOPE_CONVERSION;
 }

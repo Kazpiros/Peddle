@@ -11,6 +11,6 @@
 
 // Running sample rate
 // native ADC is exeedingly slow.
-#define SAMPLE_RATE 9600U
+#define SAMPLE_RATE 1000000U
 
 #endif
