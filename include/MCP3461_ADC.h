@@ -1,11 +1,15 @@
+#ifndef MCP3461ADC_H
+#define MCP3461ADC_H
 /*
     Device communication starts with command byte,
     then followed by databytes on SDO or SDI depending on
     READ or WRITE
 */
+
 #include <avr/io.h>
 
-#define SPI_DEVICE_ADDR (0b01)
+/* CHANGE THIS BASED ON PHYSICAL ADDRESS ON PACKAGE*/
+#define ADC_SPI_DEVICE_ADDR (0b01) 
 
 /* Writable addresses are 0x01 to 0x0D */
 #define ADDR_LENGTH (16)
@@ -91,8 +95,8 @@
 
 #define CRCCFG_REG      0 // RO  
 
-#define MCP_ADC_SINGLE_READ ((SPI_DEVICE_ADDR << 6) | ( 0x00 << 2) | (MCP_ADC_STATIC_READ))
-#define MCP_ADC_INC_READ ((SPI_DEVICE_ADDR << 6) | ( 0x00 << 2) | (MCP_ADC_READ))
+#define MCP_ADC_SINGLE_READ ((ADC_SPI_DEVICE_ADDR << 6) | ( 0x00 << 2) | (MCP_ADC_STATIC_READ))
+#define MCP_ADC_INC_READ ((ADC_SPI_DEVICE_ADDR << 6) | ( 0x00 << 2) | (MCP_ADC_READ))
 
 static uint8_t incWriteLoop[ADDR_LENGTH] =
 {
@@ -114,3 +118,4 @@ static uint8_t incWriteLoop[ADDR_LENGTH] =
 };
 
 uint8_t incReadLoop[ADDR_LENGTH];
+#endif

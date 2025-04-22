@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "USART.hpp"
+#include "SPI.hpp"
 #include "ADC_START.hpp"
 #include "PWM.hpp"
 #include "Filters.hpp"
@@ -78,4 +79,9 @@ ISR(TIMER2_COMPA_vect)
 	TCNT2 = 0; // reset timer
 	//PORTB ^= (1 << PB0); // signals out
 	adc_switch = ENVELOPE_CONVERSION;
+}
+
+ISR(SPI_STC_vect)
+{
+	
 }

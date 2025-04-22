@@ -30,15 +30,15 @@ SS high is "act as master", SS low "act as slave"
 
 // SPSR is status reg, dont forget
 // MasterSPI_Init -> MOSI
-void MSPI_Init(void);
+void USART_MSPI_Init(void);
 
-inline void MSPI_Transmit(char cData);
+inline void USART_MSPI_Transmit(char cData);
 
 // SlaveSPI_init -> MISO
-void SSPI_init(void);
+void USART_SSPI_init(void);
 
-inline char SSPI_recieve(void);
+inline char USART_SSPI_recieve(void);
 
-inline char MSPI_recieve(void);
+inline char USART_MSPI_recieve(void);
 
 #endif

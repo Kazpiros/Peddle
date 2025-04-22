@@ -43,7 +43,7 @@ void USART_Flush( void )
 	}
 }
 
-void MSPI_Init(void) // gotta enable MISO too!
+void USART_MSPI_Init(void) // gotta enable MISO too!
 {
 	DDRB |= (1 << DDB2) | (1 << DDB3) | (1 << DDB5);
 	PORTB |= (1 << PB2); // deselect slave
@@ -53,7 +53,7 @@ void MSPI_Init(void) // gotta enable MISO too!
 	
 }
 
-inline void MSPI_Transmit(char cData)
+inline void USART_MSPI_Transmit(char cData)
 {
 	PORTB &= ~(1 << PB2); // SS low - select slave
 	SPDR = cData; // start tx
@@ -61,7 +61,7 @@ inline void MSPI_Transmit(char cData)
 	PORTB |= (1 << PB2); // SS high - deselect slave
 }
 
-void SSPI_init(void)
+void USART_SSPI_init(void)
 {
 	// set pin SS (DDB2 input)
 	DDRB |= (1 << DDB4);
@@ -71,13 +71,13 @@ void SSPI_init(void)
 	SPCR = (1 << SPE);
 }
 
-inline char MSPI_receive(void)
+inline char USART_MSPI_receive(void)
 {
 	while(!(SPSR & (1 << SPIF)));
 	return SPDR;
 }
 
-inline char SSPI_receive(void)
+inline char USART_SSPI_receive(void)
 {
 	while(!(SPSR & (1 << SPIF)));
 	return SPDR;
