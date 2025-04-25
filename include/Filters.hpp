@@ -11,7 +11,10 @@
 
 #define SATURATE(x) ((x > INT16_MAX) ? INT16_MAX : (x < INT16_MIN) ? INT16_MIN : (int16_t)(x))
 #define LERP(x,x1,x2,y2,y1) (y1 + (x-x1)/(x2-x1)*(y2-y1))
-
+#define ALPHA (uint16_t) 0x7FAE  //ALPHA = exp(-2pi fc/fs)
+#define ALPHAL (uint16_t) 0052
+//https://chummersone.github.io/qformat.html
+//https://dsp.stackexchange.com/questions/54086/single-pole-iir-low-pass-filter-which-is-the-correct-formula-for-the-decay-coe
 static int32_t state[IIR_ORDER] = { 0 };
 
 //change this

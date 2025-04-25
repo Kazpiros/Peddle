@@ -1,5 +1,5 @@
-#ifndef MCP3461ADC_H
-#define MCP3461ADC_H
+#ifndef MCPADC_HPP
+#define MCPADC_HPP
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,5 +16,7 @@ inline uint_fast16_t MCP_ADC_static_read(void);
 
 // Reads all ADC registers
 void MCP_ADC_reg_map_read(void);
+
+void trigger_HVC(void);
 
 #endif

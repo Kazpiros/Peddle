@@ -37,3 +37,17 @@ int16_t iir_DF1(circular_buf* filter_buf, int16_t input, int16_t level)
     return (int16_t)y;
 }
 
+int16_t envelope_detector(circular_buf* envelope_buf, int input)
+{
+    //ALPHA = exp(-2pi fc/fs)
+    input = abs(input);
+    write_cbuf(envelope_buf, input);
+    int y = (ALPHA * read_cbuf(envelope_buf, 1) 
+            + (ALPHAL)*input);
+    return y;
+}
+
+void fft(void)
+{
+
+}

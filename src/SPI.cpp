@@ -22,7 +22,7 @@ inline void MSPI_Transmit(char cData)
 {
 	SPDR = cData; // start tx
 	while(!(SPSR & (1 << SPIF)));
-	PORTB |= (1 << PB2); // SS high - deselect slave
+	//PORTB |= (1 << PB2); // SS high - deselect slave
 }
 
 inline uint16_t MSPI_receive(void)

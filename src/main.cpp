@@ -11,6 +11,7 @@
 #include "timers.hpp"
 #include "circular_buffer.hpp"
 #include "config.hpp"
+#include "MCP_DAC.hpp"
 
 unsigned int ADC_VAL = 0;
 char ADC_VAL_Char[5];
@@ -24,13 +25,21 @@ typedef enum{
 } ADC_Switch_t;
 volatile ADC_Switch_t adc_switch = DEFAULT_CONVERSION;
 
+void setup_pin_change_interrupt(void);
+
 int main(void)
 {
 	SREG = (1 << 7); // global enable
 
+	MCP_DAC DAC0(0);
+	
+	setup_pin_change_interrupt();
 	// Keep this statically allocated.
 	circular_buf filter_buf;
     cbuf_init(&filter_buf); 
+
+	circular_buf input_buf;
+	cbuf_init(&input_buf); 
 	
 	//USART_init(115200);
 	MSPI_Init(); // sck = clk/128
@@ -51,14 +60,16 @@ int main(void)
 			level = ADC_get_conversion(0);
 			level = iir_DF1(&filter_buf, level, envelope);
 			PWM_update(level);
-			MSPI_Transmit(TCNT0);
+			//MSPI_Transmit(TCNT0);
+			DAC0.DAC_write(TCNT0);
 			break;
 
 		case ENVELOPE_CONVERSION:
 			envelope = ADC_get_conversion(1);
 			level = iir_DF1(&filter_buf, level, envelope);
 			PWM_update(level);
-			MSPI_Transmit(0xFF); // to show that envelopes running
+			//MSPI_Transmit(0xFF); // to show that envelopes running
+			DAC0.DAC_write(TCNT0);
 			adc_switch = DEFAULT_CONVERSION;
 			break;
 
@@ -66,6 +77,14 @@ int main(void)
 			break;
 		}
 	}
+}
+
+// HVC Pin interrupt (PD4)
+void setup_pin_change_interrupt(void) {
+    DDRD &= ~(1 << PD4);    
+    PORTD |= (1 << PD4);    
+    PCICR |= (1 << PCIE2);
+    PCMSK2 |= (1 << PCINT20);
 }
 
 ISR(TIMER0_COMPA_vect)
@@ -81,7 +100,8 @@ ISR(TIMER2_COMPA_vect)
 	adc_switch = ENVELOPE_CONVERSION;
 }
 
-ISR(SPI_STC_vect)
+// HVC/external HW change Triggered
+ISR(PCINT2_vect)
 {
 	
 }
