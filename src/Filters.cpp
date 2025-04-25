@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "circular_buffer.hpp"
 #include "Filters.hpp"
@@ -49,5 +50,5 @@ int16_t envelope_detector(circular_buf* envelope_buf, int input)
 
 void fft(void)
 {
-
+    return;
 }

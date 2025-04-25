@@ -14,6 +14,10 @@ void MCP_DAC::DAC_init()
 {
     MSPI_Init();
     DDRD |= (1 << DAC_CS_PIN); // Set CS as output
+    select_dac();
+    DAC_write(0b01,VREF_REG_ADDR);
+    DAC_write(0b00,PD_REG_ADDR);
+    DAC_write(0x00,STAT_GAIN_REG_ADDR);
     deselect_dac();
 }
 
@@ -22,6 +26,20 @@ void MCP_DAC::DAC_write(uint16_t value)
     value &= (0x0FFF);
     
     uint8_t data_high = (value >> 8) & 0x0F;
+    uint8_t data_low = (value) & 0xFF;
+
+    select_dac();
+    MSPI_Transmit(CMDR_BYTE_WRITE);
+    MSPI_Transmit(data_high);
+    MSPI_Transmit(data_low);
+    deselect_dac();
+}
+
+void MCP_DAC::DAC_write(uint16_t value, uint8_t address)
+{
+    value &= (0x0FFF);
+    uint8_t cmd_byte = (address << 3);
+    uint8_t data_high = (value >> 8) & 0xFF;
     uint8_t data_low = (value) & 0xFF;
 
     select_dac();

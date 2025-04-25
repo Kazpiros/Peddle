@@ -23,3 +23,5 @@ void cbuf_init(circular_buf* cbuf)
     cbuf->writeIndex = 0;
     cbuf->readIndex = 0;
 }
+
+//make class to override cbuf_init to also specify a size

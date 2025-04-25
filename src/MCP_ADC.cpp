@@ -6,14 +6,18 @@
 #include "MCP_ADC.hpp"
 #include "circular_buffer.hpp"
 
+MCP_ADC::MCP_ADC(uint8_t channel) : _channel(channel)
+{
+    write(0x01, ADC_SPI_DEVICE_ADDR);
+}
 // writes to all registers of ADC
-void MCP_ADC_write(uint8_t start_addr, uint8_t device_address)
+void MCP_ADC::write(uint8_t start_addr, uint8_t device_address)
 {   
     if((start_addr == 0x00) || (start_addr >= 0x0E))
         return; // invalid addresses
     
     PORTB &= ~(1 << PB2); // select slave
-    uint8_t cmd = (ADC_SPI_DEVICE_ADDR << 6) | (start_addr << 2) | (MCP_ADC_WRITE);  // start Inc. Write
+    uint8_t cmd = (device_address << 6) | (start_addr << 2) | (MCP_ADC_WRITE);  // start Inc. Write
     MSPI_Transmit(cmd);
 
     uint8_t current_addr = start_addr;
@@ -28,7 +32,7 @@ void MCP_ADC_write(uint8_t start_addr, uint8_t device_address)
     PORTB |= (1 << PB2); //  deselect slave
 }
 // Reads only data register
-inline uint_fast16_t MCP_ADC_static_read(void)
+inline uint_fast16_t MCP_ADC::static_read(void)
 {
     PORTB &= ~(1 << PB2); // select slave
     
@@ -42,7 +46,7 @@ inline uint_fast16_t MCP_ADC_static_read(void)
 
 }
 // Reads all ADC registers
-void MCP_ADC_reg_map_read(void)
+void MCP_ADC::reg_map_read(void)
 {
     PORTB &= ~(1 << PB2); // select slave
     MSPI_Transmit(MCP_ADC_INC_READ);
@@ -53,7 +57,7 @@ void MCP_ADC_reg_map_read(void)
     PORTB |= (1 << PB2); //  deselect slave
 }
 
-void trigger_HVC(void)
+void MCP_ADC::trigger_int(void)
 {
     PCIFR |= (1 << PCIF2);
 }

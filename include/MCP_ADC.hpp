@@ -8,15 +8,24 @@
 #include "SPI.hpp"
 #include "circular_buffer.hpp"
 
-// writes to all registers of ADC
-void MCP_ADC_write(uint8_t start_addr, uint8_t device_address);
+class MCP_ADC
+{
+    public:
+    // channel selection not functional yet, use the .h for better control.
+    MCP_ADC(uint8_t channel);
 
-// Reads only data register
-inline uint_fast16_t MCP_ADC_static_read(void);
+    // writes to all registers of ADC
+    void write(uint8_t start_addr, uint8_t device_address);
 
-// Reads all ADC registers
-void MCP_ADC_reg_map_read(void);
+    // Reads only data register
+    inline uint_fast16_t static_read(void);
 
-void trigger_HVC(void);
+    // Reads all ADC registers
+    void reg_map_read(void);
 
+    static void trigger_int(void);
+
+    private:
+    uint8_t _channel;
+};
 #endif

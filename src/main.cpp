@@ -12,6 +12,7 @@
 #include "circular_buffer.hpp"
 #include "config.hpp"
 #include "MCP_DAC.hpp"
+#include "MCP_ADC.hpp"
 
 unsigned int ADC_VAL = 0;
 char ADC_VAL_Char[5];
@@ -32,7 +33,8 @@ int main(void)
 	SREG = (1 << 7); // global enable
 
 	MCP_DAC DAC0(0);
-	
+	MCP_ADC ADC0(0);
+
 	setup_pin_change_interrupt();
 	// Keep this statically allocated.
 	circular_buf filter_buf;
@@ -57,7 +59,7 @@ int main(void)
 		switch (adc_switch)
 		{
 		case DEFAULT_CONVERSION:
-			level = ADC_get_conversion(0);
+			level = ADC0.static_read();
 			level = iir_DF1(&filter_buf, level, envelope);
 			PWM_update(level);
 			//MSPI_Transmit(TCNT0);
@@ -100,7 +102,7 @@ ISR(TIMER2_COMPA_vect)
 	adc_switch = ENVELOPE_CONVERSION;
 }
 
-// HVC/external HW change Triggered
+// internal/external change Triggered
 ISR(PCINT2_vect)
 {
 	
