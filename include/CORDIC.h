@@ -5,7 +5,7 @@
 
 #define FIXED_POINT_SCALE 32768. // convert float to int by 1 << 15 (2^15)
 #define A_ 1.64676025806 // prod_{i=0}^{n} (sqrt{1+2^{-2i}})
-static float NAN = 0.0 / 0.0;
+static char nan = 0.0 / 0.0;
 
 //table of precalculated atan(2^-i) up to 16 iterations
 float z_table[16] = {

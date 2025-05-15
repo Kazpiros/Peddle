@@ -7,10 +7,16 @@
 */
 
 // CPU running frequency
-#define F_CPU (int)16e6
+#define F_CPU 16000000U
 
 // Running sample rate
 // native ADC is exeedingly slow.
 #define SAMPLE_RATE 1000000U
+
+#if F_CPU == 16000000U
+    #define MIRCOSECOND 16
+#elif F_CPU == 8000000U
+    #define MIRCOSECOND 8
+#endif 
 
 #endif

@@ -17,4 +17,6 @@ uint8_t timA_8_PreInt(uint16_t rate);
 
 uint8_t timB_8_PreInt(uint16_t rate);
 
+void delay_us(uint16_t us);
+
 #endif

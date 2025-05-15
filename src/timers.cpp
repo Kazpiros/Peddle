@@ -2,8 +2,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <avr/interrupt.h>
+#include <util/delay.h> // can i even use this?
+
 #include "timers.hpp"
 
 // Ensure rate/64 > 255
@@ -36,7 +37,12 @@ void timB_8_init(uint16_t rate)
 
     TCNT2 = 0;
 }
-
+// lazy delayer, can only be max 256. ~ duration*16us = time
+void delay_us(uint16_t us) {
+    while (us--) {
+        _delay_us(1);  // delay a single microsecond in each loop
+    }
+}
 //Pre-mature Interrupt, returns difference between arg and TCNTn
 uint8_t timA_8_PreInt(uint16_t rate)
 {

@@ -48,4 +48,6 @@ int16_t iir_DF2(circular_buf* filter_buf, int16_t input, int16_t level);
 
 int16_t iir_DF1(circular_buf* filter_buf, int16_t input, int16_t level);
 
+int16_t envelope_detector(circular_buf* envelope_buf, int input);
+
 #endif
